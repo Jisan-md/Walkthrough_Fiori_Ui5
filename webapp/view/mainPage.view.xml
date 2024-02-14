@@ -1,0 +1,91 @@
+<mvc:View
+    controllerName="fioriwalk.controller.mainPage"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+>
+    <Shell>
+        <App>
+            <pages>
+                <Page title="{i18n>homePageTitle}">
+                    <content>
+                        <Panel
+                            headerText="{i18n>helloPanelTitle}"
+                            class="sapUiResponsiveMargin"
+                            width="auto"
+                        >
+                            <content>
+                                <Button
+                                    text="{i18n>showHelloButtonText}"
+                                    press=".onShowHello"
+                                    class="sapUiSmallMarginEnd"
+                                />
+                                <Input
+                                    value="{/recipient/name}"
+                                    description="Hello {/recipient/name}"
+                                    valueLiveUpdate="true"
+                                    width="60%"
+                                />
+                                <Button
+                                    id="helloDialogButton"
+                                    text="{i18n>openDialogButtonText}"
+                                    press=".onOpenDialog"
+                                    class="sapUiSmallMarginEnd"
+                                />
+                            </content>
+                        </Panel>
+                        <VBox>
+                            <List
+                                id="invoiceList"
+                                headerText="Invoice Data"
+                                class="sapUiResponsiveMargin"
+                                width="auto"
+                                items="{invoice>/Invoices}"
+                            >
+                                <headerToolbar>
+                                    <Toolbar>
+                                        <Title text="Invoice Data" />
+                                        <ToolbarSpacer />
+                                        
+                                        <SearchField
+                                            width="50%"
+                                            search=".onFilterInvoices"
+                                        />
+                                    </Toolbar>
+                                </headerToolbar>
+                                <items>
+                                    <ObjectListItem
+                                        title="{invoice>Quantity} x {invoice>ProductName}"
+                                        number="{
+                    parts: [
+                        'invoice>ExtendedPrice',
+                        'view>/currency'
+                    ],
+                    type: 'sap.ui.model.type.Currency',
+                    formatOptions: {
+                        showMeasure: false
+                    }
+                }"
+                                        numberUnit="{view>/currency}"
+                                        numberState="{= ${invoice>ExtendedPrice} > 50 ? 'Error' : 'Success' }"
+                                        type="Navigation"
+                                        press=".onPress"
+                                    >
+                                        <firstStatus>
+                                            <ObjectStatus
+                                                text="{
+                            path: 'invoice>Status',
+                            formatter: '.formatter.statusText'
+                        }"
+                                            />
+                                        </firstStatus>
+                                    </ObjectListItem>
+                                </items>
+                            </List>
+                        </VBox>
+                    </content>
+                </Page>
+            </pages>
+        </App>
+    </Shell>
+</mvc:View>
